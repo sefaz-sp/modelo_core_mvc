@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>@ViewData["Title"]</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="icon" type="image/png" href="~/img/faviconSP.png">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/css/jqueryui/jquery-ui-1.10.1.custom.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/font-awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="~/css/sefaz.css">
+</head>
+
+<body>
+    <header>
+        <div class="topo row">
+            <div class="tituloesquerda col-4 col-sm-5 col-md-6 col-lg-4">Secretaria da Fazenda e Planejamento</div>
+            <div class="titulocentro   col-6 col-sm-4 col-md-4 col-lg-4">DTI-CIA - Centro de Inovação e Arquitetura</div>
+            <div class="titulodireita  col-2 col-sm-3 col-md-2 col-lg-4">
+                <div class="user-name col-10"> @ViewData["Usuario"] </div>
+                <div class="menu_popup col-2">
+                    <div class="dropdown menu_popup_drop">
+                        <i id="botao_popup" class="dropdown-toggle fas fa-user-cog" data-toggle="dropdown" aria-expanded="false" alt="Menu de informações do sistema"></i>
+                        <ul class="dropdown-menu drp-mnu">
+                            <li>
+                                <i class="fas fa-mail-bulk"></i>
+                                <a asp-area="" asp-controller="Home" asp-action="Contato">Contato</a>
+                            </li>
+                            <li>
+                                <i class="fas fa-id-card"></i>
+                                <a asp-area="" asp-controller="Home" asp-action="TesteIdentity">Teste do Identity</a>
+                            </li>
+                            <li class="quebra_linha"></li>
+                            <li>
+                                <i class="fas fa-info-circle"></i>
+                                <a asp-area="" asp-controller="Home" asp-action="Sobre">Sobre</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="conteudo">
+        <div id="sidebar" class="lateral">
+            <nav>
+                <ul class="list-unstyled components" id="menu">
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="Index">
+                            <i class='fas fa-home'></i>
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://etc.intra.fazenda.sp.gov.br/sites/dticia/Lists/Calendario/calendar.aspx" target="_blank">
+                            <i class="fas fa-calendar"></i>
+                            Calendário do CIA
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="Privacidade">
+                            <i class="fas fa-user-secret"></i>
+                            Privacidade
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div id="btn-bars" class="col-1 no-gutter">
+                <button type="button" id="sidebarCollapse" class="btn btn-retro">
+                    <i class="fa fa-angle-double-left"></i><span class="txRetro"></span>
+                </button>
+            </div>
+        </div>
+
+        <div id="content">
+            <div class="container">
+                <main>
+                    @RenderBody()
+                </main>
+            </div>
+            <hr>
+        </div>
+    </div>
+
+
+    <footer>
+        <div id="govsp-rodape">
+            <div id="govsp-footerGlobal" role="navigation">
+                <ul class="govsph-links">
+                    <li class="govsp-link-rodape"><a class="govsp-links-footer" href="https://www.ouvidoria.sp.gov.br/Portal/Default.aspx" target="_blank">Ouvidoria</a></li>
+                    <li class="govsp-link-rodape"><a class="govsp-links-footer" href="http://www.transparencia.sp.gov.br/" target="_blank">Transparência</a></li>
+                    <li class="govsp-link-rodape"><a class="govsp-links-footer no-border" href="http://www.sic.sp.gov.br/" target="_blank">SIC</a></li>
+                    <li class="govsp-link-rodape-lg" tabindex="0"><img class="govsph-logo-rodape" src="~/img/logo-rodape.png" alt="Logotipo Governo do Estado de São Paulo" /></li>
+                    <li class="govsp-link-rodape-lg" tabindex="0"><img class="govsph-logo-rodape logo-negativo" src="~/img/logo-rodape-negativo.png" alt="Logotipo Governo do Estado de São Paulo" /></li>
+                </ul>
+            </div>
+            <div id="govsp-footer-bottom" class="govsp-azul"></div>
+        </div>
+    </footer>
+
+    <script src="~/js/script-cabecalho.js"></script>
+    <script src="~/js/script-contrast.js"></script>
+    <script src="~/js/script-tamanho-fonte.js"></script>
+    <script src="~/js/script-scroll.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/highlight.pack.js"></script>
+    <script src="~/js/clipboard.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/jquery-ui-1.10.4.custom.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/sefaz.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

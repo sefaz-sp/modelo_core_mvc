@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Authentication
+<h1>@ViewData["Message"]</h1>
+<div aria-label="breadcrumb" role="link">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a asp-area="" asp-controller="Home" asp-action="TesteIdentity">Teste do Identity</a></li>
+    </ol>
+</div>
+
+<section>
+    <h2>Claims:</h2>
+    <dl>
+        @foreach (var claim in User.Claims)
+        {
+            <dt>@claim.Type</dt>
+            <dd>@claim.Value</dd>
+            <dd>@claim.Issuer</dd>
+        }
+    </dl>
+    <h2>Propriedades:</h2>
+    <dl>
+        @foreach (var prop in (await Context.AuthenticateAsync()).Properties.Items)
+        {
+            <dt>@prop.Key</dt>
+            <dd>@prop.Value</dd>
+        }
+    </dl>
+    <dl>
+        <dt>BootstrapContext</dt>
+        <dd>@User.Identities.First().BootstrapContext</dd>
+    </dl>
+
+</section>
