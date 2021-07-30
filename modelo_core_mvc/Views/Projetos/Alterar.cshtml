@@ -1,0 +1,42 @@
+﻿@using modelo_core_mvc.projetos;
+@model modelo_core_mvc.projetos.Projetos
+
+<div aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+        <li class="breadcrumb-item"><a asp-area="" asp-controller="Projetos" asp-action="Index">Projetos</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a asp-area="" asp-controller="Projetos" asp-action="Alterar">Editar</a></li>
+    </ol>
+</div>
+
+@{
+    ViewData["Title"] = "Projeto";
+}
+
+<h1>@ViewData["Message"]</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Alterar">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Nome" class="control-label"></label>
+                <input asp-for="Nome" required class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descricao" class="control-label"></label>
+                <input asp-for="Descricao" required class="form-control" />
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-sucesso mr-1" />
+                <a asp-action="Index" class="btn btn-cancelar mr-1">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+</div>
+

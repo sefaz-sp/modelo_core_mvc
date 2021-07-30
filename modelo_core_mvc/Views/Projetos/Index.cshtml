@@ -1,0 +1,56 @@
+﻿@using modelo_core_mvc.projetos;
+@model IEnumerable<Projetos>
+
+    <div aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a asp-area="" asp-controller="Projetos" asp-action="Index">Projetos</a></li>
+        </ol>
+    </div>
+
+    @{
+        ViewData["Title"] = "Projetos";
+    }
+
+    <h1>@ViewData["Message"]</h1>
+
+    <p>
+        <a asp-action="Adicionar">+ Adicionar Projeto</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nome)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Descricao)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Descricao)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Alterar", "Alterar", new { item.Id }) |
+                        @Html.ActionLink("Detalhes", "Detalhes", new { item.Id }) |
+                        @Html.ActionLink("Excluir", "Excluir", new { item.Id })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

@@ -1,0 +1,43 @@
+﻿@using modelo_core_mvc.projetos;
+@model modelo_core_mvc.projetos.Projetos
+
+<div aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+        <li class="breadcrumb-item"><a asp-area="" asp-controller="Projetos" asp-action="Index">Projetos</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a asp-area="" asp-controller="Projetos" asp-action="Adicionar">Adicionar</a></li>
+    </ol>
+</div>
+
+<h1>@ViewData["Message"]</h1>
+
+<h3>Deseja excluir esse registro?</h3>
+<div>
+    <h4>Projeto:</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Descricao)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Descricao)
+        </dd>
+    </dl>
+
+    <form asp-action="Excluir">
+        <input type="submit" value="Excluir" class="btn btn-outline-danger mr-1" />
+        <a asp-action="Index" class="btn btn-cancelar mr-1">Cancelar</a>
+    </form>
+</div>

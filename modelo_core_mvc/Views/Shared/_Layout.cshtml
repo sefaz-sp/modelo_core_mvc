@@ -16,7 +16,7 @@
     <header>
         <div class="topo row">
             <div class="tituloesquerda col-4 col-sm-5 col-md-6 col-lg-4">Secretaria da Fazenda e Planejamento</div>
-            <div class="titulocentro   col-6 col-sm-4 col-md-4 col-lg-4">DTI-CIA - Centro de Inovação e Arquitetura</div>
+            <div class="titulocentro   col-6 col-sm-4 col-md-4 col-lg-4">Modelo Sefaz de aplicação Asp Net Core com Razor</div>
             <div class="titulodireita  col-2 col-sm-3 col-md-2 col-lg-4">
                 <div class="user-name col-10"> @ViewData["Usuario"] </div>
                 <div class="menu_popup col-2">
@@ -31,10 +31,14 @@
                                 <i class="fas fa-id-card"></i>
                                 <a asp-area="" asp-controller="Home" asp-action="TesteIdentity">Teste do Identity</a>
                             </li>
-                            <li class="quebra_linha"></li>
                             <li>
                                 <i class="fas fa-info-circle"></i>
                                 <a asp-area="" asp-controller="Home" asp-action="Sobre">Sobre</a>
+                            </li>
+                            <li class="quebra_linha"></li>
+                            <li>
+                                <i class="fas fa-door-closed"></i>
+                                <a asp-area="" asp-controller="Home" asp-action="Sair">Sair</a>
                             </li>
                         </ul>
                     </div>
@@ -52,6 +56,12 @@
                         <a asp-area="" asp-controller="Home" asp-action="Index">
                             <i class='fas fa-home'></i>
                             Home
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Projetos" asp-action="Index">
+                            <i class="fas fa-table"></i>
+                            Lista de Projetos
                         </a>
                     </li>
                     <li>

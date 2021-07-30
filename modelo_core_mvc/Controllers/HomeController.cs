@@ -4,18 +4,23 @@ using Microsoft.Extensions.Configuration;
 using Identity;
 using modelo_core_mvc.Models;
 using Microsoft.AspNetCore.Authorization;
+using modelo_core_mvc.HttpClients;
+using System.Threading.Tasks;
 
-namespace sitecia.Controllers
+namespace modelo_core_mvc.Controllers
 {
     [Authorize]
     public class HomeController : Controller
     {
         private IConfiguration Configuration;
+        private readonly ProjetosApiClient _api;
+
         public string NomeUsuario { get; private set; }
 
-        public HomeController(IConfiguration configuration, Usuario usuario)
+        public HomeController(IConfiguration configuration, ProjetosApiClient api, Usuario usuario)
         {
             Configuration = configuration;
+            _api = api;
             if (usuario.Nome != null)
             { NomeUsuario = usuario.Nome; }
             else
@@ -42,11 +47,13 @@ namespace sitecia.Controllers
             return View();
         }
 
-        public IActionResult Sobre()
+        public async Task<ActionResult> Sobre()
         {
             ViewData["Usuario"] = NomeUsuario;
             ViewData["Title"] = "Sobre";
             ViewData["Message"] = "Sobre essa aplicação";
+            ViewData["status"] = await _api.GetStatusAsync();
+            ViewData["conexao"] = await _api.GetConexaoAsync();
 
             return View();
         }
@@ -56,6 +63,15 @@ namespace sitecia.Controllers
             ViewData["Usuario"] = NomeUsuario;
             ViewData["Title"] = "Contato";
             ViewData["Message"] = "Fale conosco";
+
+            return View();
+        }
+
+        public IActionResult Sair()
+        {
+            ViewData["Usuario"] = NomeUsuario;
+            ViewData["Title"] = "Sair";
+            ViewData["Message"] = "Encerrar a sessão";
 
             return View();
         }

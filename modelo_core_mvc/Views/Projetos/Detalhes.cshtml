@@ -1,0 +1,47 @@
+﻿@using modelo_core_mvc.projetos;
+@model modelo_core_mvc.projetos.Projetos
+
+<div aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+        <li class="breadcrumb-item"><a asp-area="" asp-controller="Projetos" asp-action="Index">Projetos</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a asp-area="" asp-controller="Projetos" asp-action="Detalhes">Detalhes</a></li>
+    </ol>
+</div>
+
+@{
+    ViewData["Title"] = "Projeto";
+}
+
+<h1>@ViewData["Message"]</h1>
+
+<div>
+    <h4>Projeto: @Html.DisplayFor(model => model.Nome)</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Descricao)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Descricao)
+        </dd>
+    </dl>
+</div>
+<div>
+    <button type="button" class="btn btn-sucesso mr-1">
+        @Html.ActionLink("Alterar", "Alterar", new { Model.Id })
+    </button>
+    <a asp-action="Index" class="btn btn-cancelar mr-1">Voltar</a>
+</div>
