@@ -1,0 +1,65 @@
+{
+  "apiVersion": "apps/v1",
+  "kind": "Deployment",
+  "metadata": {
+    "name": "[transformar]",
+    "namespace": "[transformar]"
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "matchLabels": {
+        "app": "[transformar]"
+      }
+    },
+    "template": {
+      "metadata": {
+        "labels": {
+          "app": "[transformar]"
+        }
+      },
+      "spec": {
+        "nodeSelector": {
+          "arquitetura": "[transformar]"
+        },
+        "containers": [
+          {
+            "name": "[transformar]",
+            "image": "file transform",
+            "imagePullPolicy": "Always",
+            "ports": [
+              {
+                "containerPort": 80
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": "200m"
+              }
+            }
+          }
+        ],
+        "imagePullSecrets": [
+          {
+            "name": "secret-registry"
+          }
+        ],
+        "dnsConfig": {
+          "searches": [
+            "app.svc.cluster.local",
+            "svc.cluster.local",
+            "cluster.local",
+            "intra.fazenda.sp.gov.br",
+            "sede.fazenda.sp.gov.br",
+            "fazenda.sp.gov.br"
+          ],
+          "nameservers": [
+            "10.96.0.10",
+            "172.16.32.7",
+            "172.16.32.8"
+          ]
+        }
+      }
+    }
+  }
+}
