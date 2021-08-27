@@ -25,4 +25,8 @@
     <Folder Include="Connected Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="..\.dockerignore" Link="k8s\.dockerignore" />
+  </ItemGroup>
+
 </Project>
