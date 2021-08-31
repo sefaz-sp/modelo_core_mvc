@@ -50,12 +50,12 @@ namespace modelo_core_mvc
                 app.UseHsts();
             }
 
-            if (!string.IsNullOrEmpty(Configuration["dadosdeploy:nomeappkubernetes"]))
+            if (!string.IsNullOrEmpty(Configuration["dadosdeploy:nomeappk8s"]))
             {
-                //No servidor kubernetes com aplicações compartilhadas, a pasta base da rota deve ser informada (nomeappkubernetes)
+                //No servidor kubernetes com aplicações compartilhadas, a pasta base da rota deve ser informada (nomeappk8s)
                 app.Use((context, next) =>
                 {
-                    context.Request.PathBase = "/" + Configuration["dadosdeploy:nomeappkubernetes"];
+                    context.Request.PathBase = "/" + Configuration["dadosdeploy:nomeappk8s"];
                     return next();
                 });
             }
