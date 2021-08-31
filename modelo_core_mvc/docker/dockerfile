@@ -3,7 +3,6 @@ WORKDIR /var/wwroot/modelo_core_mvc
 EXPOSE 80
 EXPOSE 443
 COPY . .
-COPY CA.crt /etc/ssl/certs/CA.crt
-RUN c_rehash /etc/ssl/cert 
+COPY CA.crt /usr/local/share/ca-certificates/
 RUN update-ca-certificates
 ENTRYPOINT ["dotnet", "modelo_core_mvc.dll"]
