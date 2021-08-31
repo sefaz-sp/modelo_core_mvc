@@ -49,6 +49,17 @@ namespace modelo_core_mvc
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            if (!string.IsNullOrEmpty(Configuration["dadosdeploy:nomeappkubernetes"]))
+            {
+                //No servidor kubernetes com aplicações compartilhadas, a pasta base da rota deve ser informada (nomeappkubernetes)
+                app.Use((context, next) =>
+                {
+                    context.Request.PathBase = "/" + Configuration["dadosdeploy:nomeappkubernetes"];
+                    return next();
+                });
+            }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
