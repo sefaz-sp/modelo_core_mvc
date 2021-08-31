@@ -16,7 +16,7 @@
         "http": {
           "paths": [
             {
-              "path": "/__nomeapp__(/|$)(.*)",
+              "path": "/__nomeapp__",
               "pathType": "Prefix",
               "backend": {
                 "service": {
