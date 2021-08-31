@@ -2,20 +2,20 @@
   "apiVersion": "apps/v1",
   "kind": "Deployment",
   "metadata": {
-    "name": "[transformar]",
-    "namespace": "[transformar]"
+    "name": "__nomeapp__",
+    "namespace": "sefazsp-linux"
   },
   "spec": {
     "replicas": 1,
     "selector": {
       "matchLabels": {
-        "app": "[transformar]"
+        "app": "__nomeapp__"
       }
     },
     "template": {
       "metadata": {
         "labels": {
-          "app": "[transformar]"
+          "app": "__nomeapp__"
         }
       },
       "spec": {
@@ -26,7 +26,7 @@
         },
         "containers": [
           {
-            "name": "[transformar]",
+            "name": "__nomeapp__",
             "image": "file transform",
             "imagePullPolicy": "Always",
             "ports": [

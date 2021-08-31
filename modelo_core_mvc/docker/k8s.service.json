@@ -2,8 +2,8 @@
   "apiVersion": "v1",
   "kind": "Service",
   "metadata": {
-    "name": "[transformar]",
-    "namespace": "[transformar]"
+    "name": "__nomeapp__",
+    "namespace": "sefazsp-linux"
   },
   "spec": {
     "ports": [
@@ -19,7 +19,7 @@
       }
     ],
     "selector": {
-      "app": "[transformar]"
+      "app": "__nomeapp__"
     }
   }
 }
