@@ -19,6 +19,8 @@
         }
       },
       "spec": {
+        "automountServiceAccountToken": false,
+        "serviceAccount": "microservico-ads-dev",
         "nodeSelector": {
           "arquitetura": "[transformar]"
         },
@@ -41,7 +43,7 @@
         ],
         "imagePullSecrets": [
           {
-            "name": "secret-registry"
+            "name": "secret-registry-harbor"
           }
         ],
         "dnsConfig": {

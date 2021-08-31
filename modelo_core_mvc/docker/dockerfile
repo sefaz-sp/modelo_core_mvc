@@ -1,4 +1,4 @@
-FROM repo-microsrv.intra.fazenda.sp.gov.br:5000/dotnet/aspnet:3.1
+FROM repoweb-microsrv.intra.fazenda.sp.gov.br:5000/dotnet/aspnet:3.1-alpine
 WORKDIR /var/wwroot/modelo_core_mvc
 EXPOSE 80
 EXPOSE 443
