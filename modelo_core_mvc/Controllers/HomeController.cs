@@ -54,6 +54,7 @@ namespace modelo_core_mvc.Controllers
             ViewData["Message"] = "Sobre essa aplicação";
             ViewData["status"] = await _api.GetStatusAsync();
             ViewData["conexao"] = await _api.GetConexaoAsync();
+            ViewData["EnderecoAPI"] = Configuration["apiendereco:projetos"];
 
             return View();
         }
