@@ -2,10 +2,10 @@ FROM repoweb-microsrv.intra.fazenda.sp.gov.br:5000/dotnet/aspnet:3.1-alpine
 WORKDIR /var/wwroot/modelo_core_mvc
 
 #Adiciona usuario do Container (Non Root)
-RUN adduser -D app
+RUN adduser -D app 
 EXPOSE 8080
 EXPOSE 8443
-ENV ASPNETCORE_URLS=http://+:8080
+ENV ASPNETCORE_URLS=http://+:8080
 
 COPY . .
 COPY CA.crt /usr/local/share/ca-certificates/
