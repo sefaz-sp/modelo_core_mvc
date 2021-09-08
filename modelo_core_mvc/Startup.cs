@@ -23,8 +23,9 @@ namespace modelo_core_mvc
         {
             services.AddControllersWithViews();
 
-            //Sefaz Identity
+            //Identity
             IdentityConfig.RegistrarOpcoes(Configuration);
+
             services.AddAuthentication(IdentityConfig.AuthenticationOptions)
             .AddWsFederation(IdentityConfig.WSFederationOptions)
             .AddCookie("Cookies", IdentityConfig.CookieAuthenticationOptions);
