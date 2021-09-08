@@ -1,8 +1,17 @@
 FROM repoweb-microsrv.intra.fazenda.sp.gov.br:5000/dotnet/aspnet:3.1-alpine
 WORKDIR /var/wwroot/modelo_core_mvc
-EXPOSE 80
-EXPOSE 443
+
+#Adiciona usuario do Container (Non Root)
+RUN adduser -D app 
+EXPOSE 8080
+EXPOSE 8443
+ENV ASPNETCORE_URLS=http://+:8080
+
+#Copia cod. fonte e CA 
 COPY . .
 COPY CA.crt /usr/local/share/ca-certificates/
-RUN update-ca-certificates
+RUN update-ca-certificates &&  chown app -R .
+
+#Usuario que rodará o container
+USER app
 ENTRYPOINT ["dotnet", "modelo_core_mvc.dll"]
