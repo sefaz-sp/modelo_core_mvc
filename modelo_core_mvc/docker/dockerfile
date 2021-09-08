@@ -7,9 +7,11 @@ EXPOSE 8080
 EXPOSE 8443
 ENV ASPNETCORE_URLS=http://+:8080
 
+#Copia cod. fonte e CA 
 COPY . .
 COPY CA.crt /usr/local/share/ca-certificates/
-RUN update-ca-certificates
+RUN update-ca-certificates &&  chown app -R .
+
 #Usuario que rodará o container
 USER app
 ENTRYPOINT ["dotnet", "modelo_core_mvc.dll"]
