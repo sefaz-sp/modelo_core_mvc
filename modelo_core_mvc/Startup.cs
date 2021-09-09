@@ -29,7 +29,7 @@ namespace modelo_core_mvc
             services.AddAuthentication(IdentityConfig.AuthenticationOptions)
             .AddWsFederation(IdentityConfig.WSFederationOptions)
             .AddCookie("Cookies", IdentityConfig.CookieAuthenticationOptions);
-            //Requer a classe IdentityValores, além dessas linhas acima, na aplicação e em cada api que se utilizar de autenticação WSFederation
+            //Requer a classe IdentityValores, alÃ©m dessas linhas acima, na aplicaÃ§Ã£o e em cada api que se utilizar de autenticaÃ§Ã£o WSFederation
 
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<Usuario>();
@@ -40,7 +40,8 @@ namespace modelo_core_mvc
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            //if (env.IsDevelopment())
+            if (Environment.IsEnvironment("Production"))
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -53,7 +54,7 @@ namespace modelo_core_mvc
 
             if (!string.IsNullOrEmpty(Configuration["dadosdeploy:nomeappk8s"]))
             {
-                //No servidor kubernetes com aplicações compartilhadas, a pasta base da rota deve ser informada (nomeappk8s)
+                //No servidor kubernetes com aplicaÃ§Ãµes compartilhadas, a pasta base da rota deve ser informada (nomeappk8s)
                 app.Use((context, next) =>
                 {
                     context.Request.PathBase = "/" + Configuration["dadosdeploy:nomeappk8s"];
