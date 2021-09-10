@@ -5,7 +5,7 @@ WORKDIR /var/wwroot/modelo_core_mvc
 RUN adduser -D app 
 EXPOSE 8080
 EXPOSE 8443
-ENV ASPNETCORE_URLS=http://+:8080
+ENV ASPNETCORE_URLS="http://+:8080"
 
 #Copia cod. fonte e CA 
 COPY . .
