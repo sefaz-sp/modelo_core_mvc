@@ -1,0 +1,56 @@
+﻿<Assertion xmlns="urn:oasis:names:tc:SAML:2.0:assertion" ID="_abf4f8c7-79ec-447d-b236-868cd8fdf233" IssueInstant="2021-09-08T19:15:16.898Z" Version="2.0">
+	<Issuer>www.identityhml.fazenda.sp.gov.br</Issuer>
+	<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+		<SignedInfo>
+			<CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"></CanonicalizationMethod>
+			<SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"></SignatureMethod>
+			<Reference URI="#_abf4f8c7-79ec-447d-b236-868cd8fdf233">
+				<Transforms>
+					<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"></Transform>
+					<Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"></Transform>
+				</Transforms>
+				<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+				<DigestValue>dSTMqjxm1jBUoayT0qHQjP11PwHfwDTzcLkz6/WKESE=</DigestValue>
+			</Reference>
+		</SignedInfo>
+		<SignatureValue>xE4Fm/t6Exu+qbImUZ+3GSEFPlYgjZQWGzUezDsrXinu8aEnCljSy30E63yYq+uMr2zDpPq3WvMUT2Jx0fdv7D/OHtKBkcrSFIZv9dcGEEikTo3iLQ8Kb4VW0i9yTiIKdLR7BbiReo38zD92C6+BHgqlimJ5kWgM6avlLRDD5ZISdptTU4cb6uSOiXuKLoV+Yul6mYEy08kmpANpLjP85Fwicj9eDovH64RxDmziwZXs1zX3tO3vhDBEOXTYAmHyI0suz6w6tcrX/ZZiJvr2IlWiAOk6AQet9loatEpng9ZK4T5eZYB0IWf1ThAE66b4fgU6bPdraA4eJrOLO81JbQ==</SignatureValue>
+		<KeyInfo>
+			<X509Data>
+				<X509Certificate>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</X509Certificate>
+			</X509Data>
+		</KeyInfo>
+	</Signature>
+	<Subject>
+		<SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer"></SubjectConfirmation>
+	</Subject>
+	<Conditions NotBefore="2021-09-08T19:15:16.898Z" NotOnOrAfter="2021-09-08T20:15:16.898Z">
+		<AudienceRestriction>
+			<Audience>https://localhost:5001/signin-wsfed</Audience>
+		</AudienceRestriction>
+	</Conditions>
+	<AttributeStatement>
+		<Attribute Name="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn">
+			<AttributeValue>wtfscampos@intra.fazenda.sp.gov.br</AttributeValue>
+		</Attribute>
+		<Attribute Name="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name">
+			<AttributeValue>WALTER DE TARSO FARIA SANTOS DE CAMPOS:02265607835</AttributeValue>
+		</Attribute>
+		<Attribute Name="http://schemas.fazenda.sp.gov.br/identity/claims/CPF">
+			<AttributeValue>02265607835</AttributeValue>
+		</Attribute>
+		<Attribute Name="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/dateofbirth">
+			<AttributeValue>14/12/1963</AttributeValue>
+		</Attribute>
+		<Attribute Name="http://schemas.fazenda.sp.gov.br/identity/claims/TipoSTS">
+			<AttributeValue>STS Certificado (WebForms)</AttributeValue>
+			<AttributeValue>STS Certificado SSO (WebForms)</AttributeValue>
+			<AttributeValue>STS PortalSSO (WebForms)</AttributeValue>
+		</Attribute>
+		<Attribute Name="http://schemas.fazenda.sp.gov.br/identity/claims/UserID">
+			<AttributeValue>02265607835</AttributeValue>
+		</Attribute>
+		<Attribute Name="http://schemas.fazenda.sp.gov.br/identity/claims/ClaimSets">
+			<AttributeValue>80000001</AttributeValue>
+		</Attribute>
+	</AttributeStatement>
+</Assertion>
