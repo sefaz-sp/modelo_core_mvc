@@ -13,5 +13,5 @@ COPY CA.crt /usr/local/share/ca-certificates/
 RUN update-ca-certificates &&  chown app -R .
 
 #Usuario que rodará o container
-USER app
+#USER app
 ENTRYPOINT ["dotnet", "modelo_core_mvc.dll"]
