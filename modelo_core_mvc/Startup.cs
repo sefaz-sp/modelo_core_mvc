@@ -61,7 +61,7 @@ namespace modelo_core_mvc
                 });
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
