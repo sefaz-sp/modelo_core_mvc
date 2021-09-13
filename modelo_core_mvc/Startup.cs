@@ -23,6 +23,8 @@ namespace modelo_core_mvc
         {
             services.AddControllersWithViews();
 
+            IdentityModelEventSource.ShowPII = true; 
+
             //Identity
             IdentityConfig.RegistrarOpcoes(Configuration);
 
