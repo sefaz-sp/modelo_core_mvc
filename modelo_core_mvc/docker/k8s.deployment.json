@@ -43,8 +43,7 @@
                 "cpu": "1000m"
                 }
               }
-            }
-          }
+            } 
         ],
         "imagePullSecrets": [
           {
