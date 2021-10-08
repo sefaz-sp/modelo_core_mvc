@@ -1,4 +1,5 @@
 using Identity;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -23,13 +24,31 @@ namespace modelo_core_mvc
         {
             services.AddControllersWithViews();
 
-            //Identity
             IdentityConfig.RegistrarOpcoes(Configuration);
+            if (Configuration["identity:type"] == "openid")
+            {
+                //services.AddAuthentication()
+                //    .AddOpenIdConnect(IdentityConfig.OpenIdConnectOptions);
+                services.AddAuthentication().
+                    AddOpenIdConnect(options =>
+                {
+                    options.ClientId = "1c03fba5-0293-4719-a519-4bdfe3261ce8";
+                    options.Authority = "https://sts.hml.fazenda.sp.gov.br/adfs/";
+                    options.SignedOutRedirectUri = "https://localhost:44341/";
+                    options.Events = new OpenIdConnectEvents
+                    {
+                        OnRemoteFailure = IdentityConfig.OnAuthenticationFailed,
+                    };
 
-            services.AddAuthentication(IdentityConfig.AuthenticationOptions)
-            .AddWsFederation(IdentityConfig.WSFederationOptions)
-            .AddCookie("Cookies", IdentityConfig.CookieAuthenticationOptions);
-            //Requer a classe IdentityValores, além dessas linhas acima, na aplicação e em cada api que se utilizar de autenticação WSFederation
+                });
+            }
+            else
+            {
+                services.AddAuthentication(IdentityConfig.AuthenticationOptions)
+                .AddWsFederation(IdentityConfig.WSFederationOptions)
+                .AddCookie("Cookies", IdentityConfig.CookieAuthenticationOptions);
+                //Requer a classe IdentityValores, além dessas linhas acima, na aplicação e em cada api que se utilizar de autenticação WSFederation
+            }
 
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<Usuario>();

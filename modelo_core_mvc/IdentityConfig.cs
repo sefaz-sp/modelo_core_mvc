@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Authentication.WsFederation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Identity
 {
@@ -15,27 +18,41 @@ namespace Identity
         public static Action<WsFederationOptions> WSFederationOptions { get; private set; }
         public static Action<CookieAuthenticationOptions> CookieAuthenticationOptions { get; private set; }
         public static Action<Microsoft.AspNetCore.Authentication.AuthenticationOptions> AuthenticationOptions { get; private set; }
+        public static Action<OpenIdConnectOptions> OpenIdConnectOptions { get; private set; }
 
         public IdentityConfig()
         {
         }
 
         public static void RegistrarOpcoes(IConfiguration Configuration)
-        { 
+        {
+            configuration = Configuration;
             AuthenticationOptions = options =>
             {
-                configuration = Configuration;
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = WsFederationDefaults.AuthenticationScheme;
+                if (Configuration["identity:type"] == "openid")
+                {
+                    //options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    //options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                }
+                else
+                {
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = WsFederationDefaults.AuthenticationScheme;
+                };
             };
 
             WSFederationOptions = options =>
             {
                 options.Wtrealm = configuration["identity:realm"];
-                options.Wreply  = configuration["identity:reply"];
+                options.Wreply = configuration["identity:reply"];
                 options.MetadataAddress = configuration["identity:metadataaddress"];
-                options.Events.OnRedirectToIdentityProvider = OnRedirectToIdentityProvider;
-                options.Events.OnSecurityTokenReceived = OnSecurityTokenReceived;
+
+                //if (configuration["identity:tokenws"] != "")
+                //{
+                //    options.Events.OnRedirectToIdentityProvider = OnRedirectToIdentityProvider;
+                //    options.Events.OnSecurityTokenReceived = OnSecurityTokenReceived;
+                //}
+
                 options.TokenValidationParameters = new TokenValidationParameters { SaveSigninToken = true };
                 options.CorrelationCookie = new CookieBuilder
                 {
@@ -47,6 +64,20 @@ namespace Identity
                     Expiration = new TimeSpan(0, 0, 15, 0),
                     MaxAge = new TimeSpan(0, 0, 15, 0),
                 };
+            };
+
+            OpenIdConnectOptions = options =>
+            {
+                options.ClientId = "identity:clientid";
+                options.Authority = "identity:authority";
+                options.SignedOutRedirectUri = "identity:realm";
+                options.RequireHttpsMetadata = false;
+
+                options.Events = new OpenIdConnectEvents
+                {
+                    OnRemoteFailure = OnAuthenticationFailed,
+                };
+
             };
 
             CookieAuthenticationOptions = options =>
@@ -93,14 +124,21 @@ namespace Identity
             throw new Exception($"Token recebido é inválido ou não foi emitido para '{configuration["identity:realm"]}'.");
         }
 
-        public static Task OnRedirectToIdentityProvider(RedirectContext arg)
+        //public static Task OnRedirectToIdentityProvider(RedirectContext arg)
+        //{
+        //    arg.ProtocolMessage.Wauth = configuration["identity:Wauth"];
+        //    arg.ProtocolMessage.Wfresh = configuration["identity:timeout"];
+        //    arg.ProtocolMessage.Parameters.Add("ClaimSets", "80000000");
+        //    arg.ProtocolMessage.Parameters.Add("TipoLogin", "00031C33");
+        //    arg.ProtocolMessage.Parameters.Add("AutoLogin", "0");
+        //    arg.ProtocolMessage.Parameters.Add("Layout", "2");
+        //    return Task.FromResult(0);
+        //}
+
+        public static Task OnAuthenticationFailed(RemoteFailureContext context)
         {
-            arg.ProtocolMessage.Wauth = configuration["identity:Wauth"];
-            arg.ProtocolMessage.Wfresh = configuration["identity:timeout"];
-            arg.ProtocolMessage.Parameters.Add("ClaimSets", "80000000");
-            arg.ProtocolMessage.Parameters.Add("TipoLogin", "00031C33");
-            arg.ProtocolMessage.Parameters.Add("AutoLogin", "0");
-            arg.ProtocolMessage.Parameters.Add("Layout", "2");
+            context.HandleResponse();
+            context.Response.Redirect("/?errormessage=" + context.Failure.Message);
             return Task.FromResult(0);
         }
     }

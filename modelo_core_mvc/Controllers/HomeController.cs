@@ -17,6 +17,14 @@ namespace modelo_core_mvc.Controllers
 
         public string NomeUsuario { get; private set; }
 
+        //Insercao de teste de vulnerabilidade
+        private readonly string[] whiteList = { "https://www.sonarsource.com" };
+        public IActionResult RedirectMe(string url)
+        {
+            return Redirect(url);
+        }
+        //Fim do teste
+
         public HomeController(IConfiguration configuration, ProjetosApiClient api, Usuario usuario)
         {
             Configuration = configuration;
