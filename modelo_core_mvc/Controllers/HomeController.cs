@@ -18,7 +18,7 @@ namespace modelo_core_mvc.Controllers
         public string NomeUsuario { get; private set; }
 
         //Insercao de teste de vulnerabilidade
-        private readonly string[] whiteList = { "https://www.sonarsource.com" };
+        private readonly string[] whiteList = { "https://ads.intra.fazenda.sp.gov.br/tfs" };
         public IActionResult RedirectMe(string url)
         {
             return Redirect(url);
