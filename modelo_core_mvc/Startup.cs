@@ -32,9 +32,9 @@ namespace modelo_core_mvc
                 services.AddAuthentication().
                     AddOpenIdConnect(options =>
                 {
-                    options.ClientId = "1c03fba5-0293-4719-a519-4bdfe3261ce8";
-                    options.Authority = "https://sts.hml.fazenda.sp.gov.br/adfs/";
-                    options.SignedOutRedirectUri = "https://localhost:44341/";
+                    options.ClientId = Configuration["identity:clientid"];
+                    options.Authority = Configuration["identity:authority"];
+                    options.SignedOutRedirectUri = Configuration["identity:SignedOutRedirectUri"];
                     options.Events = new OpenIdConnectEvents
                     {
                         OnRemoteFailure = IdentityConfig.OnAuthenticationFailed,
