@@ -24,7 +24,6 @@ namespace modelo_core_mvc
         {
             services.AddControllersWithViews();
 
-            IdentityConfig.RegistrarOpcoes(Configuration);
             if (Configuration["identity:type"] == "openid")
             {
                 //services.AddAuthentication()
@@ -43,7 +42,9 @@ namespace modelo_core_mvc
                 });
             }
             else
+            if (Configuration["identity:type"] != "nenhum")
             {
+                IdentityConfig.RegistrarOpcoes(Configuration);
                 services.AddAuthentication(IdentityConfig.AuthenticationOptions)
                 .AddWsFederation(IdentityConfig.WSFederationOptions)
                 .AddCookie("Cookies", IdentityConfig.CookieAuthenticationOptions);
@@ -85,8 +86,11 @@ namespace modelo_core_mvc
 
             app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+            if (Configuration["identity:type"] != "nenhum")
+            {
+                app.UseAuthentication();
+                app.UseAuthorization();
+            }
 
             app.UseEndpoints(endpoints =>
             {
