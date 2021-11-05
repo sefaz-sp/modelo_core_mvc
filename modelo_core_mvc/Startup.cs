@@ -1,4 +1,5 @@
 using Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,32 +25,34 @@ namespace modelo_core_mvc
         {
             services.AddControllersWithViews();
 
-            IdentityConfig.RegistrarOpcoes(Configuration);
-            if (Configuration["identity:type"] == "openid")
+            IdentityConfig identityConfig = new IdentityConfig(Configuration);
+            if (Configuration["identity:type"] == "adfs")
             {
-                //services.AddAuthentication()
-                //    .AddOpenIdConnect(IdentityConfig.OpenIdConnectOptions);
-                services.AddAuthentication().
-                    AddOpenIdConnect(options =>
+                //services.AddAuthentication(identityConfig.AuthenticationOptions)
+                //    .AddOpenIdConnect(identityConfig.OpenIdConnectOptions);
+                services.AddAuthentication(options =>
                 {
-                    options.ClientId = Configuration["identity:clientid"];
-                    options.Authority = Configuration["identity:authority"];
-                    options.SignedOutRedirectUri = Configuration["identity:SignedOutRedirectUri"];
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddOpenIdConnect(options =>
+                {
+                    options.ClientId = Configuration["identity:adfs:clientid"];
+                    options.Authority = Configuration["identity:adfs:authority"];
+                    options.SignedOutRedirectUri = Configuration["identity:adfs:realm"];
+                    options.RequireHttpsMetadata = false;
+
                     options.Events = new OpenIdConnectEvents
                     {
-                        OnRemoteFailure = IdentityConfig.OnAuthenticationFailed,
+                        OnRemoteFailure = IdentityConfig.OnAuthenticationFailed
                     };
-
                 });
             }
             else
-            if (Configuration["identity:type"] != "nenhum")
             {
-                IdentityConfig.RegistrarOpcoes(Configuration);
-                services.AddAuthentication(IdentityConfig.AuthenticationOptions)
-                .AddWsFederation(IdentityConfig.WSFederationOptions)
-                .AddCookie("Cookies", IdentityConfig.CookieAuthenticationOptions);
-                //Requer a classe IdentityValores, além dessas linhas acima, na aplicação e em cada api que se utilizar de autenticação WSFederation
+                services.AddAuthentication(identityConfig.AuthenticationOptions)
+                .AddWsFederation(identityConfig.WSFederationOptions)
+                .AddCookie("Cookies", identityConfig.CookieAuthenticationOptions);
             }
 
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
@@ -87,11 +90,8 @@ namespace modelo_core_mvc
 
             app.UseRouting();
 
-            if (Configuration["identity:type"] != "nenhum")
-            {
-                app.UseAuthentication();
-                app.UseAuthorization();
-            }
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

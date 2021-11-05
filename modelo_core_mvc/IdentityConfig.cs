@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authentication.WsFederation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Tokens;
-
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -15,17 +14,12 @@ namespace Identity
     public class IdentityConfig
     {
         private static IConfiguration configuration;
+        public Action<WsFederationOptions> WSFederationOptions { get; private set; }
+        public Action<CookieAuthenticationOptions> CookieAuthenticationOptions { get; private set; }
+        public Action<Microsoft.AspNetCore.Authentication.AuthenticationOptions> AuthenticationOptions { get; private set; }
+        public Action<OpenIdConnectOptions> OpenIdConnectOptions { get; private set; }
 
-        public static Action<WsFederationOptions> WSFederationOptions { get; private set; }
-        public static Action<CookieAuthenticationOptions> CookieAuthenticationOptions { get; private set; }
-        public static Action<Microsoft.AspNetCore.Authentication.AuthenticationOptions> AuthenticationOptions { get; private set; }
-        public static Action<OpenIdConnectOptions> OpenIdConnectOptions { get; private set; }
-
-        public IdentityConfig()
-        {
-        }
-
-        public static void RegistrarOpcoes(IConfiguration Configuration)
+        public IdentityConfig(IConfiguration Configuration)
         {
             configuration = Configuration;
             AuthenticationOptions = options =>
@@ -67,20 +61,20 @@ namespace Identity
                     SameSite = SameSiteMode.None,
                     SecurePolicy = CookieSecurePolicy.Always,
                     Expiration = new TimeSpan(0, 0, 15, 0),
-                    MaxAge = new TimeSpan(0, 0, 15, 0),
+                    MaxAge = new TimeSpan(0, 0, 15, 0)
                 };
             };
 
             OpenIdConnectOptions = options =>
             {
-                options.ClientId = "identity:adfs:clientid";
-                options.Authority = "identity:adfs:authority";
-                options.SignedOutRedirectUri = "identity:adfs:realm";
+                options.ClientId = configuration["identity:adfs:clientid"];
+                options.Authority = configuration["identity:adfs:authority"];
+                options.SignedOutRedirectUri = configuration["identity:adfs:realm"];
                 options.RequireHttpsMetadata = false;
 
                 options.Events = new OpenIdConnectEvents
                 {
-                    OnRemoteFailure = OnAuthenticationFailed,
+                    OnRemoteFailure = OnAuthenticationFailed
                 };
 
             };
@@ -93,7 +87,7 @@ namespace Identity
                     HttpOnly = true,
                     IsEssential = true,
                     SameSite = SameSiteMode.None,
-                    SecurePolicy = CookieSecurePolicy.Always,
+                    SecurePolicy = CookieSecurePolicy.Always
                 };
                 options.ExpireTimeSpan = new TimeSpan(0, 0, int.Parse(configuration["identity:timeout"]), 0);
                 options.SlidingExpiration = false;
