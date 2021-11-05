@@ -25,7 +25,7 @@ namespace modelo_core_mvc
             services.AddControllersWithViews();
 
             IdentityConfig.RegistrarOpcoes(Configuration);
-            if (Configuration["identity:type"] == "openid")
+            if (Configuration["identity:type"] == "adfs")
             {
                 //services.AddAuthentication()
                 //    .AddOpenIdConnect(IdentityConfig.OpenIdConnectOptions);

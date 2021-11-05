@@ -30,7 +30,7 @@ namespace Identity
             configuration = Configuration;
             AuthenticationOptions = options =>
             {
-                if (Configuration["identity:type"] == "openid")
+                if (Configuration["identity:type"] == "adfs")
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -44,14 +44,15 @@ namespace Identity
 
             WSFederationOptions = options =>
             {
-                options.Wtrealm = configuration["identity:realm"];
                 options.Wreply = configuration["identity:reply"];
-                if (Configuration["identity:type"] == "openid")
+                if (Configuration["identity:type"] == "adfs")
                 {
-                    options.MetadataAddress = configuration["identity:metadataaddresssts"];
+                    options.Wtrealm = configuration["identity:adfs:realm"];
+                    options.MetadataAddress = configuration["identity:adfs:metadataaddress"];
                 }
                 else
                 {
+                    options.Wtrealm = configuration["identity:realm"];
                     options.MetadataAddress = configuration["identity:metadataaddress"];
                     options.Events.OnRedirectToIdentityProvider = OnRedirectToIdentityProvider;
                     options.Events.OnSecurityTokenReceived = OnSecurityTokenReceived;
@@ -72,9 +73,9 @@ namespace Identity
 
             OpenIdConnectOptions = options =>
             {
-                options.ClientId = "identity:clientid";
-                options.Authority = "identity:authority";
-                options.SignedOutRedirectUri = "identity:realm";
+                options.ClientId = "identity:adfs:clientid";
+                options.Authority = "identity:adfs:authority";
+                options.SignedOutRedirectUri = "identity:adfs:realm";
                 options.RequireHttpsMetadata = false;
 
                 options.Events = new OpenIdConnectEvents
