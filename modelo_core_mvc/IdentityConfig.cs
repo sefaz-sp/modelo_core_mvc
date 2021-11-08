@@ -22,23 +22,33 @@ namespace Identity
         public IdentityConfig(IConfiguration Configuration)
         {
             configuration = Configuration;
+
             AuthenticationOptions = options =>
             {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = WsFederationDefaults.AuthenticationScheme;
+                if (Configuration["identity:adfs:type"] == "openid")
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                }
+                else
+                {
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = WsFederationDefaults.AuthenticationScheme;
+                };
             };
 
             WSFederationOptions = options =>
             {
-                options.Wreply = configuration["identity:reply"];
                 if (Configuration["identity:type"] == "adfs")
                 {
                     options.Wtrealm = configuration["identity:adfs:realm"];
+                    options.Wreply = configuration["identity:adfs:reply"];
                     options.MetadataAddress = configuration["identity:adfs:metadataaddress"];
                 }
                 else
                 {
                     options.Wtrealm = configuration["identity:realm"];
+                    options.Wreply = configuration["identity:reply"];
                     options.MetadataAddress = configuration["identity:metadataaddress"];
                     options.Events.OnRedirectToIdentityProvider = OnRedirectToIdentityProvider;
                     options.Events.OnSecurityTokenReceived = OnSecurityTokenReceived;
@@ -68,7 +78,6 @@ namespace Identity
                 {
                     OnRemoteFailure = OnAuthenticationFailed
                 };
-
             };
 
             CookieAuthenticationOptions = options =>
