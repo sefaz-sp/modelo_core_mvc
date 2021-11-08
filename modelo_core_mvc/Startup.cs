@@ -1,13 +1,17 @@
 using Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication.WsFederation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using modelo_core_mvc.HttpClients;
+using System.Text;
 
 namespace modelo_core_mvc
 {
@@ -26,34 +30,10 @@ namespace modelo_core_mvc
             services.AddControllersWithViews();
 
             IdentityConfig identityConfig = new IdentityConfig(Configuration);
-            if (Configuration["identity:type"] == "adfs")
-            {
-                //services.AddAuthentication(identityConfig.AuthenticationOptions)
-                //    .AddOpenIdConnect(identityConfig.OpenIdConnectOptions);
-                services.AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddOpenIdConnect(options =>
-                {
-                    options.ClientId = Configuration["identity:adfs:clientid"];
-                    options.Authority = Configuration["identity:adfs:authority"];
-                    options.SignedOutRedirectUri = Configuration["identity:adfs:realm"];
-                    options.RequireHttpsMetadata = false;
 
-                    options.Events = new OpenIdConnectEvents
-                    {
-                        OnRemoteFailure = IdentityConfig.OnAuthenticationFailed
-                    };
-                });
-            }
-            else
-            {
-                services.AddAuthentication(identityConfig.AuthenticationOptions)
-                .AddWsFederation(identityConfig.WSFederationOptions)
-                .AddCookie("Cookies", identityConfig.CookieAuthenticationOptions);
-            }
+            services.AddAuthentication(identityConfig.AuthenticationOptions)
+            .AddWsFederation(identityConfig.WSFederationOptions)
+            .AddCookie("Cookies", identityConfig.CookieAuthenticationOptions);
 
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<Usuario>();

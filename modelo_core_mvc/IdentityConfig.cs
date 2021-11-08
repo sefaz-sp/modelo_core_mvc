@@ -24,16 +24,8 @@ namespace Identity
             configuration = Configuration;
             AuthenticationOptions = options =>
             {
-                if (Configuration["identity:type"] == "adfs")
-                {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                }
-                else
-                {
-                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = WsFederationDefaults.AuthenticationScheme;
-                };
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = WsFederationDefaults.AuthenticationScheme;
             };
 
             WSFederationOptions = options =>
