@@ -5,10 +5,12 @@
     <UserSecretsId>0d4a2248-4b8b-433e-8f34-e96e7f345773</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <ApplicationInsightsResourceId>/subscriptions/3fa68e1e-34cb-44eb-a396-5b2c02874c19/resourceGroups/sefaz-sp/providers/microsoft.insights/components/appinsights-sefaz-sp</ApplicationInsightsResourceId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.18.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.15.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.20" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="3.1.20" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.WsFederation" Version="3.1.20" />
