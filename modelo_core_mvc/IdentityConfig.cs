@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace Identity
 {
@@ -25,10 +26,16 @@ namespace Identity
 
             AuthenticationOptions = options =>
             {
-                if (Configuration["identity:adfs:type"] == "openid")
+                if (Configuration["identity:type"] == "jwt")
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                }
+                else
+                if (Configuration["identity:type"] == "openid")
+                {
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
                 }
                 else
                 {
@@ -39,44 +46,50 @@ namespace Identity
 
             WSFederationOptions = options =>
             {
-                if (Configuration["identity:type"] == "adfs")
+                options.Wtrealm = configuration["identity:realm"];
+                options.MetadataAddress = configuration["identity:metadataaddress"];
+
+                if (Configuration["identity:type"] == "sefazidentity")
                 {
-                    options.Wtrealm = configuration["identity:adfs:realm"];
-                    options.Wreply = configuration["identity:adfs:reply"];
-                    options.MetadataAddress = configuration["identity:adfs:metadataaddress"];
-                }
-                else
-                {
-                    options.Wtrealm = configuration["identity:realm"];
                     options.Wreply = configuration["identity:reply"];
-                    options.MetadataAddress = configuration["identity:metadataaddress"];
                     options.Events.OnRedirectToIdentityProvider = OnRedirectToIdentityProvider;
                     options.Events.OnSecurityTokenReceived = OnSecurityTokenReceived;
+                    options.TokenValidationParameters = new TokenValidationParameters { SaveSigninToken = true };
+                    options.CorrelationCookie = new CookieBuilder
+                    {
+                        Name = ".Correlation.",
+                        HttpOnly = true,
+                        IsEssential = true,
+                        SameSite = SameSiteMode.None,
+                        SecurePolicy = CookieSecurePolicy.Always,
+                        Expiration = new TimeSpan(0, 0, 15, 0),
+                        MaxAge = new TimeSpan(0, 0, 15, 0)
+                    };
                 }
-
-                options.TokenValidationParameters = new TokenValidationParameters { SaveSigninToken = true };
-                options.CorrelationCookie = new CookieBuilder
-                {
-                    Name = ".Correlation.",
-                    HttpOnly = true,
-                    IsEssential = true,
-                    SameSite = SameSiteMode.None,
-                    SecurePolicy = CookieSecurePolicy.Always,
-                    Expiration = new TimeSpan(0, 0, 15, 0),
-                    MaxAge = new TimeSpan(0, 0, 15, 0)
-                };
             };
 
-            OpenIdConnectOptions = options =>
+            if (Configuration["identity:type"] == "openid")
             {
-                options.ClientId = configuration["identity:adfs:clientid"];
-                options.Authority = configuration["identity:adfs:authority"];
-                options.SignedOutRedirectUri = configuration["identity:adfs:realm"];
-                options.RequireHttpsMetadata = false;
-
-                options.Events = new OpenIdConnectEvents
+                OpenIdConnectOptions = options =>
                 {
-                    OnRemoteFailure = OnAuthenticationFailed
+                    options.ClientId = configuration["identity:clientid"];
+                    options.Authority = configuration["identity:authority"];
+                    options.MetadataAddress = configuration["identity:metadataaddess"];
+                    options.SignedOutRedirectUri = configuration["identity:realm"];
+                    options.SignInScheme = "Cookies";
+                    options.RequireHttpsMetadata = true;
+                    options.ResponseType = OpenIdConnectResponseType.Code;
+                    options.UsePkce = false;
+                    options.Scope.Clear();
+                    options.Scope.Add("openid");
+                    options.Scope.Add("profile");
+                    options.Scope.Add("email");
+                    options.SaveTokens = true;
+
+                    options.Events = new OpenIdConnectEvents
+                    {
+                        OnRemoteFailure = OnAuthenticationFailed
+                    };
                 };
             };
 

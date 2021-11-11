@@ -1,10 +1,15 @@
 using Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication.WsFederation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using modelo_core_mvc.HttpClients;
 
 namespace modelo_core_mvc
@@ -25,16 +30,24 @@ namespace modelo_core_mvc
 
             IdentityConfig identityConfig = new IdentityConfig(Configuration);
 
-            if (Configuration["identity:adfs:type"] == "openid")
+            if (Configuration["identity:type"] == "openid")
             {
                 services.AddAuthentication(identityConfig.AuthenticationOptions)
-                    .AddOpenIdConnect(identityConfig.OpenIdConnectOptions);
+                        .AddOpenIdConnect(identityConfig.OpenIdConnectOptions)
+                        .AddCookie();
+            }
+            else
+            if (Configuration["identity:type"] == "wsfed")
+            {
+                services.AddAuthentication(identityConfig.AuthenticationOptions)
+                        .AddWsFederation(identityConfig.WSFederationOptions)
+                        .AddCookie();
             }
             else
             {
                 services.AddAuthentication(identityConfig.AuthenticationOptions)
-                .AddWsFederation(identityConfig.WSFederationOptions)
-                .AddCookie("Cookies", identityConfig.CookieAuthenticationOptions);
+                        .AddWsFederation(identityConfig.WSFederationOptions)
+                        .AddCookie("Cookies", identityConfig.CookieAuthenticationOptions);
             }
 
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
