@@ -22,9 +22,9 @@ namespace modelo_core_mvc.HttpClients
         }
 
         //Consultar
-        public async Task<Projetos> GetProjetoAsync(int id)
+        public async Task<Projetos> GetProjetoAsync(long cd_projeto)
         {
-            var resposta = await _httpClient.GetAsync($"Projetos/{id}");
+            var resposta = await _httpClient.GetAsync($"Projetos/{cd_projeto}");
             resposta.EnsureSuccessStatusCode();
             return new Projetos().ToModel(await resposta.Content.ReadAsStringAsync());
         }
@@ -53,10 +53,13 @@ namespace modelo_core_mvc.HttpClients
             return await resposta.Content.ReadAsStringAsync();
         }
 
-        public async Task DeleteProjetoAsync(int id)
+        public async Task DeleteProjetoAsync(long cd_projeto)
         {
-            var resposta = await _httpClient.DeleteAsync($"Projetos/{id}");
-            resposta.EnsureSuccessStatusCode();
+            if (cd_projeto != 0)
+            {
+                var resposta = await _httpClient.DeleteAsync($"Projetos/{cd_projeto}");
+                resposta.EnsureSuccessStatusCode();
+            }
         }
 
         //Incluir
@@ -73,9 +76,9 @@ namespace modelo_core_mvc.HttpClients
             resposta.EnsureSuccessStatusCode();
         }
 
-        public async Task<byte[]> GetAnexoAsync(int id)
+        public async Task<byte[]> GetAnexoAsync(long cd_projeto)
         {
-            var resposta = await _httpClient.GetAsync($"Projetos/{id}/anexo");
+            var resposta = await _httpClient.GetAsync($"Projetos/{cd_projeto}/anexo");
             resposta.EnsureSuccessStatusCode();
             return await resposta.Content.ReadAsByteArrayAsync();
         }

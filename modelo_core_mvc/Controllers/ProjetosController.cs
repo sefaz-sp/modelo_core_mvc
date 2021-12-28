@@ -28,12 +28,12 @@ namespace modelo_core_mvc.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Detalhes(int id)
+        public async Task<ActionResult> Detalhes(long cd_projeto)
         {
             ViewData["Usuario"] = NomeUsuario;
             ViewData["Title"] = "Projeto";
             ViewData["Message"] = "";
-            return View(await _api.GetProjetoAsync(id));
+            return View(await _api.GetProjetoAsync(cd_projeto));
         }
 
         [HttpGet]
@@ -58,12 +58,13 @@ namespace modelo_core_mvc.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Alterar(int id)
+        public async Task<ActionResult> Alterar(long cd_projeto)
         {
             ViewData["Usuario"] = NomeUsuario;
             ViewData["Title"] = "Editar Projeto";
             ViewData["Message"] = "Editar informações do projeto";
-            return View(await _api.GetProjetoAsync(id));
+            var model = await _api.GetProjetoAsync(cd_projeto);
+            return View(model);
         }
 
         [HttpPost]
@@ -79,12 +80,13 @@ namespace modelo_core_mvc.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Excluir(int id)
+        public async Task<ActionResult> Excluir(long cd_projeto)
         {
             ViewData["Usuario"] = NomeUsuario;
             ViewData["Title"] = "Excluir Projeto";
             ViewData["Message"] = "Exclusão do projeto";
-            return View(await _api.GetProjetoAsync(id));
+            var model = await _api.GetProjetoAsync(cd_projeto);
+            return View(model);
         }
 
         [HttpPost]
@@ -93,7 +95,7 @@ namespace modelo_core_mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _api.DeleteProjetoAsync(model.Id);
+                await _api.DeleteProjetoAsync(model.cd_projeto);
                 return RedirectToAction("Index");
             }
             return BadRequest();

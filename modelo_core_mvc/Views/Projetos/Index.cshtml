@@ -15,19 +15,19 @@
     <h1>@ViewData["Message"]</h1>
 
     <p>
-        <a asp-action="Adicionar">+ Adicionar Projeto</a>
+        <a asp-action="Adicionar" class="btn btn-regular mr-1">+ Adicionar Projeto</a>
     </p>
     <table class="table">
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Id)
+                    @Html.DisplayNameFor(model => model.cd_projeto)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Nome)
+                    @Html.DisplayNameFor(model => model.nm_projeto)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Descricao)
+                    @Html.DisplayNameFor(model => model.ds_projeto)
                 </th>
                 <th></th>
             </tr>
@@ -37,18 +37,18 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Id)
+                        @Html.DisplayFor(modelItem => item.cd_projeto)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Nome)
+                        @Html.DisplayFor(modelItem => item.nm_projeto)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Descricao)
+                        @Html.DisplayFor(modelItem => item.ds_projeto)
                     </td>
                     <td>
-                        @Html.ActionLink("Alterar", "Alterar", new { item.Id }) |
-                        @Html.ActionLink("Detalhes", "Detalhes", new { item.Id }) |
-                        @Html.ActionLink("Excluir", "Excluir", new { item.Id })
+                        @Html.ActionLink("Alterar", "Alterar", new { item.cd_projeto }) |
+                        @Html.ActionLink("Detalhes", "Detalhes", new { item.cd_projeto }) |
+                        @Html.ActionLink("Excluir", "Excluir", new { item.cd_projeto })
                     </td>
                 </tr>
             }
