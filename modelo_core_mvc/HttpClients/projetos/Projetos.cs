@@ -14,7 +14,7 @@ namespace modelo_core_mvc.projetos
         public string nm_projeto { get; set; }
         [Display(Name = "Descrição")]
         public string ds_projeto { get; set; }
-        public Projetos(int cd_projeto, string nm_projeto, string ds_projeto)
+        public Projetos(long cd_projeto, string nm_projeto, string ds_projeto)
         {
             this.cd_projeto = cd_projeto;
             this.nm_projeto = nm_projeto;
