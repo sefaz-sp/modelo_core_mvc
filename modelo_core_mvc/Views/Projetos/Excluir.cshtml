@@ -15,26 +15,29 @@
 <div>
     <hr />
     <form asp-action="Excluir">
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.cd_projeto)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.cd_projeto)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.nm_projeto)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.nm_projeto)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ds_projeto)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.ds_projeto)
-            </dd>
-        </dl>
+        <div class="form-group">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.cd_projeto)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.cd_projeto)
+                    <input asp-for="cd_projeto" hidden/>
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.nm_projeto)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.nm_projeto)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ds_projeto)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ds_projeto)
+                </dd>
+            </dl>
+        </div>
 
         <input type="submit" value="Excluir" class="btn btn-outline-danger mr-1" />
         <a asp-action="Index" class="btn btn-cancelar mr-1">Cancelar</a>
