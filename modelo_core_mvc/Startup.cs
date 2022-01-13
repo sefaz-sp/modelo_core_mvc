@@ -54,7 +54,7 @@ namespace modelo_core_mvc
             services.AddTransient<Usuario>();
 
             services.AddHttpClient<ProjetosApiClient>();
-            services.AddApplicationInsightsTelemetry("c7569fb2-504e-46f9-839d-0bd9f54948ee");
+            services.AddApplicationInsightsTelemetry(Configuration["ApplicationInsights:ConnectionString"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
