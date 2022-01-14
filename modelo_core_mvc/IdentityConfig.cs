@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.WsFederation;
 using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.WsFederation;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;

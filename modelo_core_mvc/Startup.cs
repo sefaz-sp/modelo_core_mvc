@@ -1,15 +1,10 @@
 using Identity;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authentication.WsFederation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using modelo_core_mvc.HttpClients;
 
 namespace modelo_core_mvc
@@ -54,7 +49,7 @@ namespace modelo_core_mvc
             services.AddTransient<Usuario>();
 
             services.AddHttpClient<ProjetosApiClient>();
-            services.AddApplicationInsightsTelemetry(Configuration["ApplicationInsights:ConnectionString"]);
+            services.AddApplicationInsightsTelemetry(Configuration["ApplicationInsights:InstrumentationKey"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
