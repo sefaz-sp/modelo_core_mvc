@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using modelo_core_mvc.HttpClients;
 using Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace modelo_core_mvc.Controllers
 {
+    [Authorize]
     public class ProjetosController : Controller
     {
         private readonly ProjetosApiClient _api;

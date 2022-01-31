@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace modelo_core_mvc.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         private IConfiguration Configuration;
