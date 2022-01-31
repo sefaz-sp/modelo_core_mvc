@@ -1,10 +1,12 @@
 using Identity;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Identity.Web;
 using modelo_core_mvc.HttpClients;
 
 namespace modelo_core_mvc
@@ -37,6 +39,13 @@ namespace modelo_core_mvc
                 services.AddAuthentication(identityConfig.AuthenticationOptions)
                         .AddWsFederation(identityConfig.WSFederationOptions)
                         .AddCookie();
+            }
+            else
+            if (Configuration["identity:type"] == "azuread")
+            {
+                //Microsoft.Identity.Web e Microsoft.Identity.Web.UI
+                services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+                        .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"));
             }
             else
             {
