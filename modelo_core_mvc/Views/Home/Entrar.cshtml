@@ -1,0 +1,40 @@
+﻿@model Usuario
+
+<h1>Identificação</h1>
+<section>
+    @if (string.IsNullOrEmpty(User.Claims.ToString()))
+    {
+        <h2>Usuário não autenticado.</h2>
+    }
+    else
+    {
+        <div>
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Nome)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Nome)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DataNascimento)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.DataNascimento)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DocumentoIdentificacao)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.DocumentoIdentificacao)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Login)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Login)
+                </dd>
+            </dl>
+        </div>
+    }
+</section>

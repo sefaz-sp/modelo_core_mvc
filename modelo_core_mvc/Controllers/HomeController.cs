@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using modelo_core_mvc.Models;
 using modelo_core_mvc.HttpClients;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace modelo_core_mvc.Controllers
 {
@@ -15,6 +16,9 @@ namespace modelo_core_mvc.Controllers
 
         //Insercao de teste de vulnerabilidade
         private readonly string[] whiteList = { "https://ads.intra.fazenda.sp.gov.br/tfs" };
+
+        public Usuario Usuario { get; }
+
         public IActionResult RedirectMe(string url)
         {
             return Redirect(url);
@@ -25,6 +29,7 @@ namespace modelo_core_mvc.Controllers
         {
             Configuration = configuration;
             _api = api;
+            Usuario = usuario;
         }
 
         public IActionResult Index()
@@ -69,6 +74,15 @@ namespace modelo_core_mvc.Controllers
             ViewData["Message"] = "Encerrar a sessão";
 
             return View();
+        }
+
+        [Authorize]
+        public IActionResult Entrar()
+        {
+            ViewData["Title"] = "Entrar";
+            ViewData["Message"] = "Identificar";
+
+            return View(Usuario);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,8 +1,12 @@
 ﻿@{
-    var nomeUsuario = Usuario.Nome;
+    var nomeUsuario = Usuario.NomeExibicao;
 }
 
 @if(!string.IsNullOrWhiteSpace(nomeUsuario))
 {
     @nomeUsuario
+}
+else
+{
+   <a asp-area="" asp-controller="Home" asp-action="Entrar">Entrar</a>
 }

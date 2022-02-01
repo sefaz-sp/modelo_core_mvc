@@ -8,7 +8,7 @@
 </div>
 
 <section>
-    @if (@ViewData["Usuario"].ToString() == "visitante")
+    @if (string.IsNullOrEmpty(ViewData["Usuario"].ToString()))
     {
         <h2>Usuário não autenticado.</h2>
     }
