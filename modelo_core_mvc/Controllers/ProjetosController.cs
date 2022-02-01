@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using modelo_core_mvc.HttpClients;
-using Identity;
 using Microsoft.AspNetCore.Authorization;
 
 namespace modelo_core_mvc.Controllers
@@ -11,18 +10,15 @@ namespace modelo_core_mvc.Controllers
     public class ProjetosController : Controller
     {
         private readonly ProjetosApiClient _api;
-        public string NomeUsuario { get; private set; }
 
-        public ProjetosController(ProjetosApiClient api, Usuario usuario)
+        public ProjetosController(ProjetosApiClient api)
         {
             _api = api;
-            NomeUsuario = usuario.Nome;
         }
 
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            ViewData["Usuario"] = NomeUsuario;
             ViewData["Title"] = "Projetos";
             ViewData["Message"] = "Projetos do DTI";
 
@@ -32,7 +28,6 @@ namespace modelo_core_mvc.Controllers
         [HttpGet]
         public async Task<ActionResult> Detalhes(long cd_projeto)
         {
-            ViewData["Usuario"] = NomeUsuario;
             ViewData["Title"] = "Projeto";
             ViewData["Message"] = "";
             return View(await _api.GetProjetoAsync(cd_projeto));
@@ -41,7 +36,6 @@ namespace modelo_core_mvc.Controllers
         [HttpGet]
         public ActionResult Adicionar()
         {
-            ViewData["Usuario"] = NomeUsuario;
             ViewData["Title"] = "Novo Projeto";
             ViewData["Message"] = "Incluir novo projeto";
             return View(new Projetos());
@@ -62,7 +56,6 @@ namespace modelo_core_mvc.Controllers
         [HttpGet]
         public async Task<ActionResult> Alterar(long cd_projeto)
         {
-            ViewData["Usuario"] = NomeUsuario;
             ViewData["Title"] = "Editar Projeto";
             ViewData["Message"] = "Editar informações do projeto";
             var model = await _api.GetProjetoAsync(cd_projeto);
@@ -84,7 +77,6 @@ namespace modelo_core_mvc.Controllers
         [HttpGet]
         public async Task<ActionResult> Excluir(long cd_projeto)
         {
-            ViewData["Usuario"] = NomeUsuario;
             ViewData["Title"] = "Excluir Projeto";
             ViewData["Message"] = "Exclusão do projeto";
             var model = await _api.GetProjetoAsync(cd_projeto);

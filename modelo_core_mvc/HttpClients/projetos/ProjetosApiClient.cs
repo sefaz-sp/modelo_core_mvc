@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
-using Identity;
 using modelo_core_mvc.projetos;
+using modelo_core_mvc.Models;
 
 namespace modelo_core_mvc.HttpClients
 {

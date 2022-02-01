@@ -1,4 +1,3 @@
-using Identity;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using modelo_core_mvc.HttpClients;
+using modelo_core_mvc.Models;
 
 namespace modelo_core_mvc
 {
@@ -49,13 +49,14 @@ namespace modelo_core_mvc
             }
             else
             {
+                //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
                 services.AddAuthentication(identityConfig.AuthenticationOptions)
                         .AddWsFederation(identityConfig.WSFederationOptions)
                         .AddCookie("Cookies", identityConfig.CookieAuthenticationOptions);
             }
 
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<Usuario>();
+            services.AddScoped<Usuario>();
 
             services.AddHttpClient<ProjetosApiClient>();
             services.AddApplicationInsightsTelemetry(Configuration["ApplicationInsights:InstrumentationKey"]);

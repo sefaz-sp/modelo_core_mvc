@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
-namespace Identity
+namespace modelo_core_mvc
 {
     public class IdentityConfig
     {
