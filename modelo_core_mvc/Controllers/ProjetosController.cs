@@ -16,6 +16,7 @@ namespace modelo_core_mvc.Controllers
             _api = api;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> Index()
         {
@@ -25,6 +26,7 @@ namespace modelo_core_mvc.Controllers
             return View(await _api.GetProjetosAsync());
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> Detalhes(long cd_projeto)
         {
