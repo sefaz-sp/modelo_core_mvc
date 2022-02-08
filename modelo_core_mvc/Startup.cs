@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -26,17 +25,18 @@ namespace modelo_core_mvc
             services.AddControllersWithViews();
 
             IdentityConfig identityConfig = new IdentityConfig(Configuration);
+            var opcoesAutenticacao = identityConfig.AuthenticationOptions;
 
             if (Configuration["identity:type"] == "openid")
             {
-                services.AddAuthentication(identityConfig.AuthenticationOptions)
+                services.AddAuthentication(opcoesAutenticacao)
                         .AddOpenIdConnect(identityConfig.OpenIdConnectOptions)
                         .AddCookie();
             }
             else
             if (Configuration["identity:type"] == "wsfed")
             {
-                services.AddAuthentication(identityConfig.AuthenticationOptions)
+                services.AddAuthentication(opcoesAutenticacao)
                         .AddWsFederation(identityConfig.WSFederationOptions)
                         .AddCookie();
             }
@@ -44,13 +44,13 @@ namespace modelo_core_mvc
             if (Configuration["identity:type"] == "azuread")
             {
                 //Microsoft.Identity.Web e Microsoft.Identity.Web.UI
-                services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+                services.AddAuthentication(opcoesAutenticacao)
                         .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"));
             }
             else
             {
                 //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-                services.AddAuthentication(identityConfig.AuthenticationOptions)
+                services.AddAuthentication(opcoesAutenticacao)
                         .AddWsFederation(identityConfig.WSFederationOptions)
                         .AddCookie("Cookies", identityConfig.CookieAuthenticationOptions);
             }

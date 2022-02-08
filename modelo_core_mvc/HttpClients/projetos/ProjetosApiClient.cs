@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Net.Http.Headers;
 using modelo_core_mvc.projetos;
 using modelo_core_mvc.Models;
+using System.Diagnostics;
 
 namespace modelo_core_mvc.HttpClients
 {
@@ -18,6 +19,8 @@ namespace modelo_core_mvc.HttpClients
             _configuration = configuration;
             _httpClient = httpClient;
             _httpClient.BaseAddress = new System.Uri(_configuration["apiendereco:projetos"]);
+
+            //Como obter o token?
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", usuario.Token);
         }
 

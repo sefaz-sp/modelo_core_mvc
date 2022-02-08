@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
+using System.Xml;
 
 namespace modelo_core_mvc.Models
 {
@@ -11,6 +14,9 @@ namespace modelo_core_mvc.Models
         [Display(Name = "email")]
         public string Login { get; set; }
         public string Nome { get; set; }
+
+        //Não consigo acessar a propriedade Nome na view _loginParcial, se não for estática, e não consigo acessar em outros lugares se for estática
+        //Não soube resolver, se não duplicar a propriedade
         [Display(Name = "Nome")]
         public static string NomeExibicao { get; set; }
         [Display(Name = "Doc. Identificação")]
