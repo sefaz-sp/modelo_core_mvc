@@ -8,7 +8,7 @@
 </div>
 
 <section>
-    @if (string.IsNullOrEmpty(ViewData["Usuario"].ToString()))
+    @if (string.IsNullOrEmpty(User.Identity.Name))
     {
         <h2>Usuário não autenticado.</h2>
     }

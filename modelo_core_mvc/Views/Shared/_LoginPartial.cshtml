@@ -1,13 +1,10 @@
-﻿@using modelo_core_mvc.Models
-@{
-    var nomeUsuario = Usuario.NomeExibicao;
-}
+﻿@using Microsoft.AspNetCore.Authentication
 
-@if(!string.IsNullOrWhiteSpace(nomeUsuario))
+@if (string.IsNullOrEmpty(User.Identity.Name))
 {
-    @nomeUsuario
+    <a asp-area="" asp-controller="Home" asp-action="Entrar">Entrar</a>
 }
 else
 {
-   <a asp-area="" asp-controller="Home" asp-action="Entrar">Entrar</a>
+   @User.Identity.Name
 }

@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using modelo_core_mvc.HttpClients;
+using modelo_core_mvc.Identity;
 using modelo_core_mvc.Models;
 
 namespace modelo_core_mvc

@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.WsFederation;
@@ -10,8 +10,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
-
-namespace modelo_core_mvc
+namespace modelo_core_mvc.Identity
 {
     public class IdentityConfig
     {
@@ -20,10 +19,11 @@ namespace modelo_core_mvc
         public Action<CookieAuthenticationOptions> CookieAuthenticationOptions { get; private set; }
         public Action<Microsoft.AspNetCore.Authentication.AuthenticationOptions> AuthenticationOptions { get; private set; }
         public Action<OpenIdConnectOptions> OpenIdConnectOptions { get; private set; }
-
+        public static Boolean logoff { get; private set; }
         public IdentityConfig(IConfiguration Configuration)
         {
             configuration = Configuration;
+            logoff = false;
 
             AuthenticationOptions = options =>
             {
@@ -113,6 +113,30 @@ namespace modelo_core_mvc
                 options.ExpireTimeSpan = new TimeSpan(0, 0, int.Parse(configuration["identity:timeout"]), 0);
                 options.SlidingExpiration = false;
             };
+        }
+
+        public static async Task Logout(HttpContext httpContext)
+        {
+            await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            if (configuration["identity:type"] == "jwt")
+            {
+                await httpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);
+            }
+            else
+                if (configuration["identity:type"] == "openid")
+            {
+                await httpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+            }
+            else
+                if (configuration["identity:type"] == "azuread")
+            {
+                await httpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+            }
+            else
+            {
+                await httpContext.SignOutAsync(WsFederationDefaults.AuthenticationScheme);
+            };
+            logoff = true;
         }
 
         private static async Task<Task<int>> OnSecurityTokenReceived(SecurityTokenReceivedContext arg)

@@ -5,6 +5,7 @@ using modelo_core_mvc.Models;
 using modelo_core_mvc.HttpClients;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using modelo_core_mvc.Identity;
 
 namespace modelo_core_mvc.Controllers
 {
@@ -46,6 +47,7 @@ namespace modelo_core_mvc.Controllers
         public IActionResult TesteIdentity()
         {
             ViewData["Title"] = "Teste do Identity";
+            ViewData["Usuario"] = Usuario.Nome;
             return View();
         }
 
@@ -68,10 +70,12 @@ namespace modelo_core_mvc.Controllers
             return View();
         }
 
-        public IActionResult Sair()
+        [Authorize]
+        public async Task<IActionResult> SairAsync()
         {
             ViewData["Title"] = "Sair";
             ViewData["Message"] = "Encerrar a sessão";
+            await IdentityConfig.Logout(HttpContext);
 
             return View();
         }
@@ -90,5 +94,6 @@ namespace modelo_core_mvc.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }
