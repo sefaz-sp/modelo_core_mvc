@@ -39,30 +39,7 @@
             <div class="titulocentro   col-6 col-sm-4 col-md-4 col-lg-4">Modelo Sefaz de aplicação Asp Net Core com Razor</div>
             <div class="titulodireita  col-2 col-sm-3 col-md-2 col-lg-4">
                 <div class="user-name col-10"> <partial name="_LoginPartial" /> </div>
-                <div class="menu_popup col-2">
-                    <div class="dropdown menu_popup_drop">
-                        <i id="botao_popup" class="dropdown-toggle fas fa-user-cog" data-toggle="dropdown" aria-expanded="false" alt="Menu de informações do sistema"></i>
-                        <ul class="dropdown-menu drp-mnu">
-                            <li>
-                                <i class="fas fa-mail-bulk"></i>
-                                <a asp-area="" asp-controller="Home" asp-action="Contato">Contato</a>
-                            </li>
-                            <li>
-                                <i class="fas fa-id-card"></i>
-                                <a asp-area="" asp-controller="Home" asp-action="TesteIdentity">Teste do Identity</a>
-                            </li>
-                            <li>
-                                <i class="fas fa-info-circle"></i>
-                                <a asp-area="" asp-controller="Home" asp-action="Sobre">Sobre</a>
-                            </li>
-                            <li class="quebra_linha"></li>
-                            <li>
-                                <i class="fas fa-door-closed"></i>
-                                <a asp-area="" asp-controller="Home" asp-action="Sair">Sair</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                <div class="menu_popup col-2"> <partial name="_MenuDropPartial" /> </div>
             </div>
         </div>
     </header>

@@ -76,7 +76,7 @@ namespace modelo_core_mvc.Controllers
             ViewData["Title"] = "Sair";
             ViewData["Message"] = "Encerrar a sessão";
             await IdentityConfig.Logout(HttpContext);
-
+            
             return View();
         }
 

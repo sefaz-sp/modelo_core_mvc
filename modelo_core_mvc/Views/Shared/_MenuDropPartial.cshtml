@@ -1,0 +1,35 @@
+﻿@using Microsoft.AspNetCore.Authentication
+
+<div class="dropdown menu_popup_drop">
+    <i id="botao_popup" class="dropdown-toggle fas fa-user-cog" data-toggle="dropdown" aria-expanded="false" alt="Menu de informações do sistema"></i>
+    <ul class="dropdown-menu drp-mnu">
+        <li>
+            <i class="fas fa-mail-bulk"></i>
+            <a asp-area="" asp-controller="Home" asp-action="Contato">Contato</a>
+        </li>
+        <li>
+            <i class="fas fa-id-card"></i>
+            <a asp-area="" asp-controller="Home" asp-action="TesteIdentity">Teste do Identity</a>
+        </li>
+        <li>
+            <i class="fas fa-info-circle"></i>
+            <a asp-area="" asp-controller="Home" asp-action="Sobre">Sobre</a>
+        </li>
+        <li class="quebra_linha"></li>
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            <li>
+                <i class="fas fa-door-open"></i>
+                <a asp-area="" asp-controller="Home" asp-action="Sair">Sair</a>
+            </li>
+        }
+        else
+        {
+            <li>
+                <i class="fas fa-door-closed"></i>
+                <a asp-area="" asp-controller="Home" asp-action="Entrar">Entrar</a>
+            </li>
+        }
+    </ul>
+</div>

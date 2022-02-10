@@ -1,10 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Authentication
-
-@if (string.IsNullOrEmpty(User.Identity.Name))
-{
-    <a asp-area="" asp-controller="Home" asp-action="Entrar">Entrar</a>
+@{
+    var nomeExibicao = "Visitante";
+    if (User.Identity.IsAuthenticated)
+    {
+        nomeExibicao = @User.Identity.Name.Split(":")[0];
+    }
 }
-else
-{
-   @User.Identity.Name
-}
+@nomeExibicao
