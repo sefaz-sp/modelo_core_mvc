@@ -1,15 +1,25 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Identity.Web;
+using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace modelo_core_mvc.Models
 {
     public class Usuario
     {
+        private readonly ITokenAcquisition _tokenAcquisition;
+        private readonly IHttpClientFactory _clientFactory;
+        private IConfiguration _configuration;
+
         public string Token { get; set; }
         private XmlDocument TokenSAML { get; set; }
         [Display(Name = "email")]
@@ -23,8 +33,13 @@ namespace modelo_core_mvc.Models
         [Display(Name = "Nascimento")]
         public string DataNascimento { get; set; }
 
-        public Usuario(IHttpContextAccessor acessor)
+        public Usuario(IHttpContextAccessor acessor, IHttpClientFactory clientFactory, ITokenAcquisition tokenAcquisition, IConfiguration configuration)
+
         {
+            _tokenAcquisition = tokenAcquisition;
+            _clientFactory = clientFactory;
+            _configuration = configuration;
+
             TokenSAML = new XmlDocument();
             if (acessor.HttpContext.User.Identities.First().BootstrapContext != null)
             {
@@ -39,7 +54,7 @@ namespace modelo_core_mvc.Models
                 if (acessor.HttpContext.Request.Headers["Authorization"].Count > 0)
                 {
                     try { TokenSAML.LoadXml(UTF8Encoding.UTF8.GetString(Convert.FromBase64String(acessor.HttpContext.Request.Headers["Authorization"].ToString().Split(" ")[1]))); }
-                    catch {}
+                    catch { }
                 }
             }
 
@@ -72,6 +87,36 @@ namespace modelo_core_mvc.Models
                     if (campo == "dateofbirth")
                         DataNascimento = valor;
                 }
+            }
+        }
+
+        public async Task<JArray> GetApiDataAsync()
+        {
+            try
+            {
+                var client = _clientFactory.CreateClient();
+
+                var scope = _configuration["CallApi:ScopeForAccessToken"];
+                var accessToken = await _tokenAcquisition.GetAccessTokenForUserAsync(new[] { scope });
+
+                client.BaseAddress = new Uri(_configuration["CallApi:ApiBaseAddress"]);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var response = await client.GetAsync("weatherforecast");
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var data = JArray.Parse(responseContent);
+
+                    return data;
+                }
+
+                throw new ApplicationException($"Status code: {response.StatusCode}, Error: {response.ReasonPhrase}");
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException($"Exception {e}");
             }
         }
     }

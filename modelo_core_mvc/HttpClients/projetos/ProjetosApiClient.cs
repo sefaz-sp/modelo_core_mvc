@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using modelo_core_mvc.projetos;
 using modelo_core_mvc.Models;
 using System.Diagnostics;
+using Microsoft.Identity.Web;
 
 namespace modelo_core_mvc.HttpClients
 {
@@ -13,20 +14,40 @@ namespace modelo_core_mvc.HttpClients
     {
         private readonly HttpClient _httpClient;
         private IConfiguration _configuration;
+        private ITokenAcquisition _tokenAcquisition;
+        private string accessToken;
 
-        public ProjetosApiClient(HttpClient httpClient, IConfiguration configuration, Usuario usuario)
+        public ProjetosApiClient(HttpClient httpClient, IConfiguration configuration, Usuario usuario, ITokenAcquisition tokenAcquisition)
         {
             _configuration = configuration;
+            _tokenAcquisition = tokenAcquisition;
             _httpClient = httpClient;
             _httpClient.BaseAddress = new System.Uri(_configuration["apiendereco:projetos"]);
 
-            //Como obter o token?
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", usuario.Token);
+        }
+
+
+        private async Task PrepareAuthenticatedClient()
+        {
+            string[] initialScopes = _configuration.GetValue<string>("CallApi:ScopeForAccessToken")?.Split(' ');
+
+            try
+            {
+                accessToken = await _tokenAcquisition.GetAccessTokenForUserAsync(initialScopes);
+            }
+            catch (System.Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         //Consultar
         public async Task<Projetos> GetProjetoAsync(long cd_projeto)
         {
+            await PrepareAuthenticatedClient();
             var resposta = await _httpClient.GetAsync($"Projetos/{cd_projeto}");
             resposta.EnsureSuccessStatusCode();
             return new Projetos().ToModel(await resposta.Content.ReadAsStringAsync());
@@ -60,6 +81,7 @@ namespace modelo_core_mvc.HttpClients
         {
             if (cd_projeto != 0)
             {
+                await PrepareAuthenticatedClient();
                 var resposta = await _httpClient.DeleteAsync($"Projetos/{cd_projeto}");
                 resposta.EnsureSuccessStatusCode();
             }
@@ -68,6 +90,7 @@ namespace modelo_core_mvc.HttpClients
         //Incluir
         public async Task PostProjetoAsync(Projetos projeto)
         {
+            await PrepareAuthenticatedClient();
             var resposta = await _httpClient.PostAsync("Projetos", projeto.ToJson());
             resposta.EnsureSuccessStatusCode();
         }
@@ -75,6 +98,7 @@ namespace modelo_core_mvc.HttpClients
         //Alterar
         public async Task PutProjetoAsync(Projetos projeto)
         {
+            await PrepareAuthenticatedClient();
             var resposta = await _httpClient.PutAsync("Projetos", projeto.ToJson());
             resposta.EnsureSuccessStatusCode();
         }

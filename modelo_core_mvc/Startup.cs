@@ -45,8 +45,14 @@ namespace modelo_core_mvc
             if (Configuration["identity:type"] == "azuread")
             {
                 //Microsoft.Identity.Web e Microsoft.Identity.Web.UI
-                services.AddAuthentication(opcoesAutenticacao)
-                        .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"));
+                //services.AddAuthentication(opcoesAutenticacao)
+                //        .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"));
+
+                string[] initialScopes = Configuration.GetValue<string>("CallApi:ScopeForAccessToken")?.Split(' ');
+
+                services.AddMicrosoftIdentityWebAppAuthentication(Configuration)
+                    .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
+                    .AddInMemoryTokenCaches();
             }
             else
             {
@@ -60,6 +66,7 @@ namespace modelo_core_mvc
             services.AddScoped<Usuario>();
 
             services.AddHttpClient<ProjetosApiClient>();
+
             services.AddApplicationInsightsTelemetry(Configuration["ApplicationInsights:InstrumentationKey"]);
         }
 
