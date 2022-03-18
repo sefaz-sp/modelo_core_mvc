@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  name: 'Visual Studio'
+  name: 'Release DEV'
 
 variables:
   solution: '**/*.sln'
