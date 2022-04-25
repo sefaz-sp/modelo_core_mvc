@@ -18,19 +18,16 @@ namespace modelo_core_mvc.Controllers
         //Insercao de teste de vulnerabilidade
         private readonly string[] whiteList = { "https://ads.intra.fazenda.sp.gov.br/tfs" };
 
-        public Usuario Usuario { get; }
-
         public IActionResult RedirectMe(string url)
         {
             return Redirect(url);
         }
         //Fim do teste
 
-        public HomeController(IConfiguration configuration, ProjetosApiClient api, Usuario usuario)
+        public HomeController(IConfiguration configuration, ProjetosApiClient api)
         {
             Configuration = configuration;
             _api = api;
-            Usuario = usuario;
         }
 
         public IActionResult Index()
@@ -46,8 +43,8 @@ namespace modelo_core_mvc.Controllers
 
         public IActionResult TesteIdentity()
         {
+            var claims = User.Claims;
             ViewData["Title"] = "Teste do Identity";
-            ViewData["Usuario"] = Usuario.Nome;
             return View();
         }
 
@@ -84,9 +81,8 @@ namespace modelo_core_mvc.Controllers
         public IActionResult Entrar()
         {
             ViewData["Title"] = "Entrar";
-            ViewData["Message"] = "Identificar";
 
-            return View(Usuario);
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

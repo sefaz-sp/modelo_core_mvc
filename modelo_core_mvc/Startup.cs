@@ -5,9 +5,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
 using modelo_core_mvc.HttpClients;
 using modelo_core_mvc.Identity;
 using modelo_core_mvc.Models;
+using System.Linq;
 
 namespace modelo_core_mvc
 {
@@ -23,7 +25,14 @@ namespace modelo_core_mvc
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            if (Configuration["identity:type"] == "azuread")
+            {
+                services.AddControllersWithViews().AddMicrosoftIdentityUI();
+            }
+            else
+            {
+                services.AddControllersWithViews();
+            }
 
             IdentityConfig identityConfig = new IdentityConfig(Configuration);
             var opcoesAutenticacao = identityConfig.AuthenticationOptions;
@@ -44,11 +53,7 @@ namespace modelo_core_mvc
             else
             if (Configuration["identity:type"] == "azuread")
             {
-                //Microsoft.Identity.Web e Microsoft.Identity.Web.UI
-                //services.AddAuthentication(opcoesAutenticacao)
-                //        .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"));
-
-                string[] initialScopes = Configuration.GetValue<string>("CallApi:ScopeForAccessToken")?.Split(' ');
+                string[] initialScopes = Configuration.GetValue<string>("CallApi:ScopeForAccessToken")?.Split(' ').Take(1).ToArray();
 
                 services.AddMicrosoftIdentityWebAppAuthentication(Configuration)
                     .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
@@ -56,14 +61,12 @@ namespace modelo_core_mvc
             }
             else
             {
-                //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
                 services.AddAuthentication(opcoesAutenticacao)
                         .AddWsFederation(identityConfig.WSFederationOptions)
                         .AddCookie("Cookies", identityConfig.CookieAuthenticationOptions);
             }
 
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<Usuario>();
 
             services.AddHttpClient<ProjetosApiClient>();
 

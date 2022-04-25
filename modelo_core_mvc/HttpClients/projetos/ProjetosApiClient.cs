@@ -4,9 +4,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
 using modelo_core_mvc.projetos;
-using modelo_core_mvc.Models;
 using System.Diagnostics;
 using Microsoft.Identity.Web;
+using System.Linq;
 
 namespace modelo_core_mvc.HttpClients
 {
@@ -17,30 +17,34 @@ namespace modelo_core_mvc.HttpClients
         private ITokenAcquisition _tokenAcquisition;
         private string accessToken;
 
-        public ProjetosApiClient(HttpClient httpClient, IConfiguration configuration, Usuario usuario, ITokenAcquisition tokenAcquisition)
+        //public ProjetosApiClient(HttpClient httpClient, IConfiguration configuration, ITokenAcquisition tokenAcquisition)
+        public ProjetosApiClient(HttpClient httpClient, IConfiguration configuration)
         {
             _configuration = configuration;
-            _tokenAcquisition = tokenAcquisition;
+            //_tokenAcquisition = tokenAcquisition;
             _httpClient = httpClient;
             _httpClient.BaseAddress = new System.Uri(_configuration["apiendereco:projetos"]);
 
         }
 
-
         private async Task PrepareAuthenticatedClient()
         {
-            string[] initialScopes = _configuration.GetValue<string>("CallApi:ScopeForAccessToken")?.Split(' ');
+            if (_configuration["identity:type"] == "azuread")
+            {
+                string[] initialScopes = _configuration.GetValue<string>("CallApi:ScopeForAccessToken")?.Split(' ').Take(1).ToArray();
 
-            try
-            {
-                accessToken = await _tokenAcquisition.GetAccessTokenForUserAsync(initialScopes);
-            }
-            catch (System.Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                throw;
-            }
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                try
+                {
+                    accessToken = await _tokenAcquisition.GetAccessTokenForUserAsync(initialScopes);
+                }
+                catch (System.Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    throw;
+                }
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            };
+
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 

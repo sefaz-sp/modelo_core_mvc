@@ -1,40 +1,23 @@
-﻿@model Usuario
+﻿@using Microsoft.AspNetCore.Authentication
+@{
+    var nomeExibicao = "Não autenticado";
+    if (User.Identity.IsAuthenticated)
+    {
+        nomeExibicao = @User.Identity.Name.Split(":")[0];
+    }
+}
 
-<h1>Identificação</h1>
+@{
+    ViewData["Title"] = "Sefaz-SP";
+}
+<div aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a asp-area="" asp-controller="Home" asp-action="Sair">Sair</a></li>
+    </ol>
+</div>
 <section>
-    @if (string.IsNullOrEmpty(User.Claims.ToString()))
-    {
-        <h2>Usuário não autenticado.</h2>
-    }
-    else
-    {
-        <div>
-            <dl class="row">
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Nome)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Nome)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.DataNascimento)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.DataNascimento)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.DocumentoIdentificacao)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.DocumentoIdentificacao)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Login)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Login)
-                </dd>
-            </dl>
-        </div>
-    }
+    <h1>Usuário autenticado:</h1>
+    <p></p>
+    <h2>@nomeExibicao </h2>
 </section>
